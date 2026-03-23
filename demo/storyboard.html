@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storyboard 工作区 · App UA Storyboard Workbench</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="shell" id="storyboardPage">
+    <header class="topbar">
+      <div class="brand">
+        <strong>Storyboard Workbench</strong>
+        <span>左边管脚本与镜头，中间看结构预览，右边做字幕、声音和多语言编辑。</span>
+      </div>
+      <div class="button-row">
+        <a class="btn btn-ghost" href="./angles.html">返回策略页</a>
+        <a class="btn btn-ghost" href="./index.html">项目入口</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-row">
+        <div class="grid">
+          <div class="eyebrow">Core Workspace</div>
+          <h1>把左侧脚本、中央预览、底部时间线和右侧编辑器真正联动起来。</h1>
+          <p>这里不是最终视频编辑器，而是分镜级工作台。它解决的是“怎么拆”“怎么改”“怎么局部迭代”，而不是一上来就追求成片感。</p>
+        </div>
+        <div class="button-row">
+          <button class="btn btn-secondary" type="button" id="addScene">新增分镜</button>
+          <button class="btn btn-primary" type="button" id="fakeExport">刷新导出包</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="eyebrow">Workspace Brief</div>
+      <div id="workspaceBrief"></div>
+    </section>
+
+    <section class="workspace">
+      <aside class="panel">
+        <div class="eyebrow">Scene Navigator</div>
+        <h2>左侧脚本导航</h2>
+        <p class="muted">点击任一镜头后，同步更新中间预览、底部时间线高亮和右侧编辑器。</p>
+        <div class="scene-list" id="sceneList"></div>
+      </aside>
+
+      <main class="panel">
+        <div class="eyebrow">Preview</div>
+        <div id="playerMount"></div>
+        <div class="split">
+          <div>
+            <h3>剪辑区域 / Timeline</h3>
+            <p class="muted">底部镜头区负责排序、拆分、新增。它与左侧镜头脚本导航是一套共享对象，而不是两套不同数据。</p>
+          </div>
+        </div>
+        <div class="timeline" id="timeline"></div>
+      </main>
+
+      <aside class="panel">
+        <div class="eyebrow">Inspector</div>
+        <h2>右侧编辑器</h2>
+        <p class="muted">这里优先放字幕、声音、多语言和当前镜头的文案修改，而不是把所有产品设置都堆进来。</p>
+        <form class="field-grid" id="sceneForm"></form>
+        <div class="eyebrow">Production Package</div>
+        <div class="code-block" id="packageMount"></div>
+      </aside>
+    </section>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
