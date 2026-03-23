@@ -10,21 +10,21 @@
   <div class="shell" id="anglePage">
     <header class="topbar">
       <div class="brand">
-        <strong>策略选择</strong>
-        <span>先选脚本走向，再进入 storyboard 工作区。</span>
+        <strong>选择创意路线</strong>
+        <span>比较几条脚本方向，挑一条最适合这一轮测试目标的路线。</span>
       </div>
       <div class="button-row">
-        <a class="btn btn-ghost" href="./index.html">回项目入口</a>
-        <a class="btn btn-primary" href="./storyboard.html">进入 storyboard</a>
+        <a class="btn btn-ghost" href="./index.html">返回首页</a>
+        <a class="btn btn-primary" href="./storyboard.html" id="enterStoryboard">进入工作区</a>
       </div>
     </header>
 
     <section class="hero">
       <div class="hero-row">
         <div class="grid">
-          <div class="eyebrow">Angle Studio</div>
-          <h1>Creative Brief Card 不是终点，真正的判断点在策略层。</h1>
-          <p>这一步先把 brief 解释成 3 条可测试的脚本方向。每条都带自己的分镜骨架。这样用户选的是路线，而不是直接选一堆孤立镜头。</p>
+          <div class="eyebrow">Routes</div>
+          <h1>先选脚本走向，再开始做镜头。</h1>
+          <p>这里每条路线都已经带上 hook 逻辑、情绪推进和分镜骨架。你选中的不是一句文案，而是一套可继续编辑的结构。</p>
         </div>
         <div id="chosenStatus"></div>
       </div>
@@ -33,17 +33,17 @@
     <section class="layout-2">
       <aside class="panel">
         <div class="eyebrow">Brief</div>
-        <h2>系统整理后的 Creative Brief Card</h2>
+        <h2>当前视频任务</h2>
         <div id="briefMount"></div>
       </aside>
 
       <div class="panel">
         <div class="split">
           <div>
-            <div class="eyebrow">Angles</div>
-            <h2>选择一条主策略</h2>
+            <div class="eyebrow">Options</div>
+            <h2>选择一条路线</h2>
           </div>
-          <button class="btn btn-secondary" type="button" id="moreAngles">更多</button>
+          <button class="btn btn-secondary" type="button" id="moreAngles">生成更多</button>
         </div>
         <div class="angle-grid" id="angleGrid"></div>
       </div>
@@ -52,16 +52,16 @@
 
   <div class="modal" id="moreAnglesModal">
     <div class="modal-card">
-      <div class="eyebrow">More Directions</div>
-      <h2>再给我一些新的策略方向</h2>
-      <p class="muted">你可以补一个提示词，也可以什么都不填，让系统自己继续发散新的脚本走向。</p>
+      <div class="eyebrow">Generate More</div>
+      <h2>继续扩展新的脚本方向</h2>
+      <p class="muted">你可以补一个偏好，也可以直接让系统给出更多路线。</p>
       <div class="field">
-        <label for="anglePrompt">补充提示</label>
+        <label for="anglePrompt">想强调什么？</label>
         <textarea id="anglePrompt" placeholder="例如：减少抓马感，更像真实用户自拍视频；或者强调更高转化的 CTA"></textarea>
       </div>
       <div class="button-row">
         <button class="btn btn-ghost" type="button" data-close-modal>取消</button>
-        <button class="btn btn-primary" type="button" id="generateMoreAngles">重新解析更多方向</button>
+        <button class="btn btn-primary" type="button" id="generateMoreAngles">生成新路线</button>
       </div>
     </div>
   </div>
