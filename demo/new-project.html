@@ -10,24 +10,24 @@
   <div class="shell">
     <header class="topbar">
       <div class="brand">
-        <strong>新建项目</strong>
-        <span>引导式 Intake：先让系统理解产品，再让用户补创意意图。</span>
+        <strong>创建新视频</strong>
+        <span>先识别产品，再补这轮测试目标和创意约束。</span>
       </div>
       <div class="button-row">
-        <a class="btn btn-ghost" href="./index.html">返回项目入口</a>
+        <a class="btn btn-ghost" href="./index.html">返回首页</a>
       </div>
     </header>
 
     <section class="hero">
       <div class="hero-row">
         <div class="grid">
-          <div class="eyebrow">Wizard</div>
-          <h1>不是一张大表单，而是一个有层次的 brief 生成流程。</h1>
-          <p>先识别产品，再选模板，再补关键创意信息。模板不同，输入也不同，避免让 Problem-Solution、Scenario、Winner Iteration 走同一套弱输入。</p>
+          <div class="eyebrow">Start</div>
+          <h1>把产品信息、测试目标和参考素材整理成一个清晰 brief。</h1>
+          <p>链接能识别的内容尽量自动识别，只有影响脚本和分镜的关键输入需要你补充。</p>
         </div>
         <div class="hint">
-          <strong>当前设计判断</strong>
-          <p class="muted">商店链接解析应尽可能前置，因为产品名称、图标、描述、类别这些信息本来就不该让用户再手写一遍。</p>
+          <strong>建议做法</strong>
+          <p class="muted">先贴产品链接，再补参考素材和本轮目标，通常 2 分钟内就能进入策略页。</p>
         </div>
       </div>
       <div class="stepper">
@@ -55,9 +55,9 @@
         <div class="split">
           <div>
             <div class="eyebrow">Step 1</div>
-            <h2>优先从产品链接识别信息</h2>
+            <h2>导入产品信息</h2>
           </div>
-          <button class="btn btn-secondary" type="button" id="parseStoreButton">解析链接</button>
+          <button class="btn btn-secondary" type="button" id="parseStoreButton">自动识别</button>
         </div>
         <div class="field-grid two-col">
           <div class="field">
@@ -84,19 +84,19 @@
 
       <section class="hidden" data-step-section="2">
         <div class="eyebrow">Step 2</div>
-        <h2>选择这次要走的创意结构</h2>
+        <h2>选择创意结构</h2>
         <div class="template-grid" id="templateGrid"></div>
         <div class="panel">
-          <div class="eyebrow">Template-specific Inputs</div>
-          <h3>模板差异化输入</h3>
-          <p class="muted">这一步故意不统一，因为 T1 / T2 / T3 的产品问题不一样，输入也应该不一样。</p>
+          <div class="eyebrow">Template Inputs</div>
+          <h3>补充这类模板需要的细节</h3>
+          <p class="muted">不同模板会要求不同输入，比如剧情情境、hook 限制或 winner 保留元素。</p>
           <div class="field-grid" id="templateFields"></div>
         </div>
       </section>
 
       <section class="hidden" data-step-section="3">
         <div class="eyebrow">Step 3</div>
-        <h2>补最少但必要的创意意图</h2>
+        <h2>补本轮测试目标</h2>
         <div class="field-grid two-col">
           <div class="field">
             <label for="targetPlatform">目标平台</label>
@@ -151,13 +151,13 @@
 
       <section class="hidden" data-step-section="4">
         <div class="eyebrow">Step 4</div>
-        <h2>确认 brief，然后进入策略页</h2>
+        <h2>生成创意路线</h2>
         <div class="notice">
-          <strong>进入下一页后会发生什么？</strong>
-          <p class="muted">系统会先生成 3 个策略脚本走向。每个策略都包含自己的 hook 逻辑、情绪路线和分镜骨架。你选一个后，才进入 storyboard 工作区。</p>
+          <strong>下一步</strong>
+          <p class="muted">系统会基于当前 brief 生成 3 条脚本路线。你选中其中一条后，再进入 storyboard 工作区继续编辑。</p>
         </div>
         <div class="button-row">
-          <button class="btn btn-primary" type="button" id="generateBrief">生成 Creative Brief Card 并进入策略页</button>
+          <button class="btn btn-primary" type="button" id="generateBrief">生成路线并进入下一步</button>
         </div>
       </section>
     </form>
