@@ -412,6 +412,47 @@ textarea {
   background: rgba(255, 255, 255, 0.72);
 }
 
+.progress-steps {
+  display: grid;
+  gap: 8px;
+}
+
+.progress-step {
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.progress-step.active {
+  color: var(--accent-deep);
+  border-color: rgba(181, 75, 47, 0.24);
+  background: rgba(243, 221, 211, 0.6);
+}
+
+.hero-actions {
+  display: grid;
+  gap: 10px;
+  min-width: 280px;
+}
+
+.soft-list {
+  display: grid;
+  gap: 10px;
+}
+
+.soft-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+}
+
 .notice {
   background: rgba(83, 97, 67, 0.1);
   border-color: rgba(83, 97, 67, 0.2);
