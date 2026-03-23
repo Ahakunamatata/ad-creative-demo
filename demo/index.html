@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App UA Storyboard Workbench</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <strong>App UA Storyboard Workbench</strong>
+        <span>项目入口页：先看项目，再进入创建与生产流程。</span>
+      </div>
+      <div class="button-row">
+        <a class="btn btn-ghost" href="../app-ua-storyboard-workbench-layer4.md">查看第四层文档</a>
+        <button class="btn btn-primary" id="openNewProject" type="button">新建项目</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-row">
+        <div class="grid">
+          <div class="eyebrow">Project Hub</div>
+          <h1>先从项目入口开始，不把 Intake、策略、Storyboard 挤在同一页。</h1>
+          <p>这版原型改成了真实的多页面流。用户先在这里看到历史项目、状态和下一步动作，再进入引导式创建、策略选择和核心工作区。</p>
+        </div>
+        <div class="notice">
+          <strong>为什么这样改</strong>
+          <p class="muted">原来的单页 demo 更像“功能陈列”。多页面后，交互逻辑会更像真实产品：项目入口 -> brief 生成 -> 策略选择 -> storyboard 生产。</p>
+        </div>
+      </div>
+      <div class="stats" id="heroStats"></div>
+    </section>
+
+    <section class="layout-2">
+      <div class="panel">
+        <div class="split">
+          <div>
+            <div class="eyebrow">历史项目</div>
+            <h2>继续已有项目或进入工作区</h2>
+          </div>
+          <a class="btn btn-secondary" href="./new-project.html">直接进入创建引导</a>
+        </div>
+        <div class="project-grid" id="projectGrid"></div>
+      </div>
+
+      <aside class="panel">
+        <div class="eyebrow">Flow</div>
+        <h2>推荐工作流</h2>
+        <div class="list">
+          <div class="card">
+            <h3>1. 任务 Intake</h3>
+            <p class="muted">先录入产品与 brief，不直接写长表单。支持粘贴商店链接，系统优先自动识别产品信息。</p>
+          </div>
+          <div class="card">
+            <h3>2. 策略选择</h3>
+            <p class="muted">先选脚本路线，再决定哪条值得进入分镜生产，而不是一上来就直接生成整条视频。</p>
+          </div>
+          <div class="card">
+            <h3>3. Storyboard 工作区</h3>
+            <p class="muted">左侧管镜头脚本，中间预览视频结构，底部排时间线，右侧调字幕、多语言和声音。</p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <div class="footer-note">线框级原型，当前重点是对象、页面和交互，不是正式 UI。</div>
+  </div>
+
+  <div class="modal" id="newProjectModal">
+    <div class="modal-card">
+      <div class="eyebrow">Create</div>
+      <h2>从哪里开始新项目？</h2>
+      <p class="muted">这一步不直接让用户填一大堆字段，而是先告诉用户接下来会走一个有引导的创建流程：识别产品信息 -> 选择模板 -> 补全简报 -> 生成策略。</p>
+      <div class="layout-2">
+        <div class="card">
+          <h3>方式 A：从商店链接开始</h3>
+          <p class="muted">粘贴 App Store / Google Play 链接，系统优先自动识别 icon、名称、描述、痛点和承诺，减少用户组织语言的负担。</p>
+        </div>
+        <div class="card">
+          <h3>方式 B：手动输入</h3>
+          <p class="muted">如果是内部测试包或没有公开商店页，也能手动补充产品信息，并继续走模板化的 brief 流程。</p>
+        </div>
+      </div>
+      <div class="button-row">
+        <button class="btn btn-ghost" type="button" data-close-modal>先关闭</button>
+        <button class="btn btn-primary" type="button" id="goWizard">进入创建引导</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
