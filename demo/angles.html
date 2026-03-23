@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>策略选择 · App UA Storyboard Workbench</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="shell" id="anglePage">
+    <header class="topbar">
+      <div class="brand">
+        <strong>策略选择</strong>
+        <span>先选脚本走向，再进入 storyboard 工作区。</span>
+      </div>
+      <div class="button-row">
+        <a class="btn btn-ghost" href="./index.html">回项目入口</a>
+        <a class="btn btn-primary" href="./storyboard.html">进入 storyboard</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-row">
+        <div class="grid">
+          <div class="eyebrow">Angle Studio</div>
+          <h1>Creative Brief Card 不是终点，真正的判断点在策略层。</h1>
+          <p>这一步先把 brief 解释成 3 条可测试的脚本方向。每条都带自己的分镜骨架。这样用户选的是路线，而不是直接选一堆孤立镜头。</p>
+        </div>
+        <div id="chosenStatus"></div>
+      </div>
+    </section>
+
+    <section class="layout-2">
+      <aside class="panel">
+        <div class="eyebrow">Brief</div>
+        <h2>系统整理后的 Creative Brief Card</h2>
+        <div id="briefMount"></div>
+      </aside>
+
+      <div class="panel">
+        <div class="split">
+          <div>
+            <div class="eyebrow">Angles</div>
+            <h2>选择一条主策略</h2>
+          </div>
+          <button class="btn btn-secondary" type="button" id="moreAngles">更多</button>
+        </div>
+        <div class="angle-grid" id="angleGrid"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal" id="moreAnglesModal">
+    <div class="modal-card">
+      <div class="eyebrow">More Directions</div>
+      <h2>再给我一些新的策略方向</h2>
+      <p class="muted">你可以补一个提示词，也可以什么都不填，让系统自己继续发散新的脚本走向。</p>
+      <div class="field">
+        <label for="anglePrompt">补充提示</label>
+        <textarea id="anglePrompt" placeholder="例如：减少抓马感，更像真实用户自拍视频；或者强调更高转化的 CTA"></textarea>
+      </div>
+      <div class="button-row">
+        <button class="btn btn-ghost" type="button" data-close-modal>取消</button>
+        <button class="btn btn-primary" type="button" id="generateMoreAngles">重新解析更多方向</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
