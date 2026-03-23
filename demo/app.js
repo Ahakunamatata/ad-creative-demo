@@ -378,6 +378,11 @@
             <div class="project-meta">${brief.appCategory} · ${brief.targetPlatform} · ${templateCatalog[project.template].name}</div>
           </div>
         </div>
+        <div class="pill-row">
+          <span class="pill">${brief.targetPlatform}</span>
+          <span class="pill">${brief.creativeGoal}</span>
+          <span class="pill">${templateCatalog[project.template].name}</span>
+        </div>
         <div class="kv">
           <strong>目标受众</strong><span>${brief.targetAudience}</span>
           <strong>核心痛点</strong><span>${brief.corePain}</span>
@@ -468,10 +473,10 @@
     if (!projectGrid) return;
     const state = getState();
     heroStats.innerHTML = `
-      <div class="stat"><span class="tiny">历史项目</span><strong>${state.projects.length}</strong></div>
-      <div class="stat"><span class="tiny">待选策略</span><strong>${state.projects.filter((project) => !project.scenes.length).length}</strong></div>
-      <div class="stat"><span class="tiny">Storyboard 中</span><strong>${state.projects.filter((project) => project.scenes.length).length}</strong></div>
-      <div class="stat"><span class="tiny">当前目标</span><strong>吞吐量</strong></div>
+      <div class="stat"><span class="tiny">项目总数</span><strong>${state.projects.length}</strong></div>
+      <div class="stat"><span class="tiny">待选路线</span><strong>${state.projects.filter((project) => !project.scenes.length).length}</strong></div>
+      <div class="stat"><span class="tiny">正在制作</span><strong>${state.projects.filter((project) => project.scenes.length).length}</strong></div>
+      <div class="stat"><span class="tiny">平均镜头数</span><strong>${Math.round(state.projects.reduce((sum, project) => sum + (project.scenes?.length || 0), 0) / state.projects.length)}</strong></div>
     `;
 
     projectGrid.innerHTML = state.projects.map((project) => `
@@ -490,8 +495,8 @@
           <strong>最近更新</strong><span>${project.updatedAt}</span>
         </div>
         <div class="button-row">
-          <a class="btn btn-secondary" href="./angles.html?project=${project.id}" data-project="${project.id}">查看策略</a>
-          <a class="btn btn-primary" href="./storyboard.html?project=${project.id}" data-project="${project.id}">进入工作区</a>
+          <a class="btn btn-secondary" href="./angles.html?project=${project.id}" data-project="${project.id}">看路线</a>
+          <a class="btn btn-primary" href="./storyboard.html?project=${project.id}" data-project="${project.id}">继续制作</a>
         </div>
       </div>
     `).join("");
@@ -520,6 +525,7 @@
     const stepButtons = document.querySelectorAll("[data-step-target]");
     const stepSections = document.querySelectorAll("[data-step-section]");
     const generateButton = document.querySelector("#generateBrief");
+    let parsing = false;
 
     let currentTemplate = "T2";
     let currentStep = 1;
@@ -533,7 +539,7 @@
     `).join("");
 
     renderTemplateSpecific(templateFields, currentTemplate, {});
-    parsedCard.innerHTML = `<div class="hint">输入 App Store / Google Play 链接后，我会模拟解析 icon、名称、描述、痛点和承诺；识别不到的字段再让用户补。</div>`;
+    parsedCard.innerHTML = `<div class="hint">贴入商店链接后，系统会先识别产品资料、推荐模板，并帮你预填核心字段。</div>`;
 
     function syncSteps() {
       stepButtons.forEach((button) => {
@@ -566,12 +572,27 @@
       }
     });
 
-    parseButton.addEventListener("click", () => {
+    parseButton.addEventListener("click", async () => {
+      if (parsing) return;
       const parsed = parseStoreUrl(storeUrlInput.value.trim());
       if (!parsed) {
         parsedCard.innerHTML = `<div class="status status-warn">先输入一个 App Store / Google Play 链接。</div>`;
         return;
       }
+      parsing = true;
+      parseButton.textContent = "识别中...";
+      parsedCard.innerHTML = `
+        <div class="card">
+          <h3>正在读取产品信息</h3>
+          <div class="progress-steps">
+            <div class="progress-step active">连接商店页</div>
+            <div class="progress-step">提取应用资料</div>
+            <div class="progress-step">识别用户痛点与核心承诺</div>
+            <div class="progress-step">匹配推荐模板</div>
+          </div>
+        </div>
+      `;
+      await new Promise((resolve) => setTimeout(resolve, 850));
       document.querySelector("#appName").value = parsed.appName;
       document.querySelector("#appCategory").value = parsed.appCategory;
       document.querySelector("#targetAudience").value = parsed.targetAudience;
@@ -587,6 +608,10 @@
               <div class="project-meta">${parsed.appStore} · ${parsed.appCategory}</div>
             </div>
           </div>
+          <div class="pill-row">
+            <span class="pill">${parsed.appStore}</span>
+            <span class="pill">推荐：${templateCatalog[parsed.suggestedTemplate].name}</span>
+          </div>
           <div class="kv">
             <strong>描述</strong><span>${parsed.description}</span>
             <strong>识别痛点</strong><span>${parsed.corePain}</span>
@@ -598,6 +623,10 @@
       currentTemplate = parsed.suggestedTemplate || currentTemplate;
       templateGrid.querySelectorAll("[data-template]").forEach((card) => card.classList.toggle("active", card.dataset.template === currentTemplate));
       renderTemplateSpecific(templateFields, currentTemplate, readTemplateSpecific(templateFields));
+      currentStep = 2;
+      syncSteps();
+      parseButton.textContent = "自动识别";
+      parsing = false;
     });
 
     generateButton.addEventListener("click", () => {
@@ -655,8 +684,10 @@
     const generateMoreButton = document.querySelector("#generateMoreAngles");
     const closeButtons = document.querySelectorAll("[data-close-modal]");
     const chosenStatus = document.querySelector("#chosenStatus");
+    const enterStoryboard = document.querySelector("#enterStoryboard");
 
     briefMount.innerHTML = briefSummaryHtml(project);
+    enterStoryboard.href = `./storyboard.html?project=${project.id}`;
 
     function renderAngles(activeId) {
       const refreshed = getProject(project.id);
@@ -683,8 +714,8 @@
       const selected = refreshed.angles.find((angle) => angle.id === activeId) || refreshed.angles[0];
       chosenStatus.innerHTML = `
         <div class="status status-success">
-          当前默认策略：<strong>${selected.title}</strong><br>
-          进入 storyboard 后，会基于这条路线生成镜头骨架。
+          已选路线：<strong>${selected.title}</strong><br>
+          ${selected.hook}
         </div>
       `;
     }
@@ -708,6 +739,7 @@
     closeButtons.forEach((button) => button.addEventListener("click", () => modal.classList.remove("open")));
     generateMoreButton.addEventListener("click", () => {
       const prompt = promptInput.value.trim();
+      generateMoreButton.textContent = "生成中...";
       const updated = updateProject(project.id, (draft) => {
         draft.angles = buildAngles(draft, prompt);
         draft.selectedAngleId = draft.angles[0].id;
@@ -716,6 +748,7 @@
       });
       renderAngles(updated.selectedAngleId);
       modal.classList.remove("open");
+      generateMoreButton.textContent = "生成新路线";
     });
   }
 
@@ -734,9 +767,11 @@
     const projectBrief = document.querySelector("#workspaceBrief");
     const addSceneButton = document.querySelector("#addScene");
     const exportButton = document.querySelector("#fakeExport");
+    const backToAngles = document.querySelector("#backToAngles");
     let selectedSceneId = project.scenes[0]?.id || "";
 
     projectBrief.innerHTML = briefSummaryHtml(project);
+    backToAngles.href = `./angles.html?project=${project.id}`;
 
     function currentProject() {
       return getProject(project.id);
@@ -785,9 +820,10 @@
             <span class="pill">${templateCatalog[current.template].name}</span>
             <span class="pill">${selectedScene.duration}</span>
             <span class="pill">${selectedScene.locked ? "已锁定" : "可迭代"}</span>
+            <span class="pill">${selectedScene.assetStatus}</span>
           </div>
           <div class="grid">
-            <small>主预览区</small>
+            <small>当前镜头预览</small>
             <h3>${selectedScene.goal}</h3>
             <p>${selectedScene.visual}</p>
             <small>VO: ${selectedScene.vo}</small>
@@ -795,7 +831,7 @@
           </div>
           <div class="grid">
             <div class="player-bar"><span></span></div>
-            <small>这里不是最终播放器，而是 storyboard 级预览。真正的价值在于镜头、文案、字幕和声音的联动编辑。</small>
+            <small>用这里快速校准节奏、信息量和镜头衔接，再决定哪些镜头要重生图片或视频。</small>
           </div>
         </div>
       `;
@@ -846,7 +882,17 @@
         </div>
       `;
 
-      packageMount.textContent = JSON.stringify(exportPackage(current), null, 2);
+      const readyAssets = current.scenes.filter((scene) => scene.assetStatus.includes("已")).length;
+      packageMount.textContent = JSON.stringify({
+        summary: {
+          project: current.name,
+          selectedRoute: selectedScene.angleTitle,
+          scenes: current.scenes.length,
+          readyAssets,
+          locale: selectedScene.language
+        },
+        renderTargets: exportPackage(current).scenes
+      }, null, 2);
       document.querySelector("#toggleLock")?.addEventListener("click", () => {
         updateProject(project.id, (draft) => {
           const scene = draft.scenes.find((item) => item.id === selectedSceneId);
@@ -927,10 +973,17 @@
 
     exportButton.addEventListener("click", () => {
       const current = currentProject();
-      packageMount.textContent = JSON.stringify(exportPackage(current), null, 2);
-      exportButton.textContent = "已刷新导出包";
+      packageMount.textContent = JSON.stringify({
+        summary: {
+          project: current.name,
+          scenes: current.scenes.length,
+          exportAt: new Date().toISOString()
+        },
+        renderTargets: exportPackage(current).scenes
+      }, null, 2);
+      exportButton.textContent = "已更新生成任务";
       setTimeout(() => {
-        exportButton.textContent = "刷新导出包";
+        exportButton.textContent = "更新生成任务";
       }, 1200);
     });
   }
