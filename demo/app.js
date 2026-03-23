@@ -1,5 +1,5 @@
 (function () {
-  const STORAGE_KEY = "uaStoryboardWorkbenchV2";
+  const STORAGE_KEY = "uaStoryboardWorkbenchV4";
   const CURRENT_KEY = "uaStoryboardCurrentProjectId";
 
   const templateCatalog = {
@@ -75,7 +75,7 @@
       id: "proj-trackmate",
       name: "TrackMate 情境版 03",
       icon: "🛰️",
-      status: "Storyboard 中",
+      status: "分镜制作中",
       updatedAt: "2026-03-23 10:20 UTC",
       template: "T2",
       appStoreUrl: "https://apps.apple.com/us/app/trackmate-360",
@@ -104,7 +104,7 @@
       id: "proj-clapfind",
       name: "ClapFind Hook Sprint",
       icon: "👏",
-      status: "待选策略",
+      status: "待选路线",
       updatedAt: "2026-03-22 18:10 UTC",
       template: "T1",
       appStoreUrl: "https://play.google.com/store/apps/details?id=com.clapfind.mobile",
@@ -198,9 +198,12 @@
   }
 
   function formatStatus(project) {
+    if (project.pipelineStatus === "rendering") return "生成中";
+    if (project.pipelineStatus === "exported") return "已导出";
+    if (project.scenes?.some((scene) => scene.performance === "weak")) return "待替换镜头";
     if (project.scenes && project.scenes.length) return project.status || "Storyboard 中";
-    if (project.selectedAngleId) return "待进工作区";
-    return "待选策略";
+    if (project.selectedAngleId) return "已选路线";
+    return "待选路线";
   }
 
   function buildAngles(project, prompt) {
@@ -236,6 +239,16 @@
         risk: "如果结果不够可信，容易被判定为过度承诺。",
         template: project.template,
         scenes: outlineByTemplate(project, "result")
+      },
+      {
+        id: `${project.id}-angle-4`,
+        title: "对话口播路线",
+        hook: "用一段像真实用户吐槽的对话开场，再自然转到产品解法。",
+        emotion: "更口语、更像创作者自拍视频",
+        why: "适合 TikTok / Meta 原生感更强的场景，也更适合加字幕版本。",
+        risk: "如果台词写得太像广告，会失去自然感。",
+        template: project.template,
+        scenes: outlineByTemplate(project, "dialogue")
       }
     ];
     if (!prompt) return base;
@@ -324,7 +337,8 @@
       voice: "Female / warm tension",
       sound: note,
       assetStatus: order % 2 === 0 ? "待生视频" : "已有分镜图",
-      locked: false
+      locked: false,
+      performance: "untested"
     };
   }
 
@@ -474,8 +488,8 @@
     const state = getState();
     heroStats.innerHTML = `
       <div class="stat"><span class="tiny">项目总数</span><strong>${state.projects.length}</strong></div>
-      <div class="stat"><span class="tiny">待选路线</span><strong>${state.projects.filter((project) => !project.scenes.length).length}</strong></div>
-      <div class="stat"><span class="tiny">正在制作</span><strong>${state.projects.filter((project) => project.scenes.length).length}</strong></div>
+      <div class="stat"><span class="tiny">待选路线</span><strong>${state.projects.filter((project) => formatStatus(project) === "待选路线").length}</strong></div>
+      <div class="stat"><span class="tiny">正在制作</span><strong>${state.projects.filter((project) => project.scenes.length && formatStatus(project) !== "生成中").length}</strong></div>
       <div class="stat"><span class="tiny">平均镜头数</span><strong>${Math.round(state.projects.reduce((sum, project) => sum + (project.scenes?.length || 0), 0) / state.projects.length)}</strong></div>
     `;
 
@@ -524,7 +538,10 @@
     const parsedCard = document.querySelector("#parsedProductCard");
     const stepButtons = document.querySelectorAll("[data-step-target]");
     const stepSections = document.querySelectorAll("[data-step-section]");
+    const nextStepButtons = document.querySelectorAll("[data-next-step]");
+    const prevStepButtons = document.querySelectorAll("[data-prev-step]");
     const generateButton = document.querySelector("#generateBrief");
+    const briefPreview = document.querySelector("#briefPreview");
     let parsing = false;
 
     let currentTemplate = "T2";
@@ -549,6 +566,25 @@
       stepSections.forEach((section) => {
         section.classList.toggle("hidden", Number(section.dataset.stepSection) !== currentStep);
       });
+      if (currentStep === 4 && briefPreview) {
+        const tempProject = {
+          template: currentTemplate,
+          icon: parseStoreUrl(storeUrlInput.value.trim())?.icon || "📱",
+          brief: {
+            appName: document.querySelector("#appName").value.trim() || "未命名产品",
+            appCategory: document.querySelector("#appCategory").value.trim() || "App",
+            targetPlatform: document.querySelector("#targetPlatform").value,
+            creativeGoal: document.querySelector("#creativeGoal").value,
+            targetAudience: document.querySelector("#targetAudience").value.trim() || "待补充",
+            corePain: document.querySelector("#corePain").value.trim() || "待补充",
+            corePromise: document.querySelector("#corePromise").value.trim() || "待补充",
+            cta: document.querySelector("#cta").value.trim() || "Download now",
+            mustInclude: document.querySelector("#mustInclude").value.trim() || "无",
+            referenceAds: document.querySelector("#referenceAds").value.trim() || "暂无"
+          }
+        };
+        briefPreview.innerHTML = briefSummaryHtml(tempProject);
+      }
     }
 
     syncSteps();
@@ -556,6 +592,18 @@
     stepButtons.forEach((button) => {
       button.addEventListener("click", () => {
         currentStep = Number(button.dataset.stepTarget);
+        syncSteps();
+      });
+    });
+    nextStepButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        currentStep = Number(button.dataset.nextStep);
+        syncSteps();
+      });
+    });
+    prevStepButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        currentStep = Number(button.dataset.prevStep);
         syncSteps();
       });
     });
@@ -636,10 +684,11 @@
         id,
         name: formData.get("projectName").toString().trim() || `${formData.get("appName")} 新项目`,
         icon: parseStoreUrl(storeUrlInput.value.trim())?.icon || "📱",
-        status: "待选策略",
+        status: "待选路线",
         updatedAt: new Date().toISOString().slice(0, 16).replace("T", " ") + " UTC",
         template: currentTemplate,
         appStoreUrl: storeUrlInput.value.trim(),
+        pipelineStatus: "draft",
         brief: {
           appName: formData.get("appName").toString().trim(),
           appCategory: formData.get("appCategory").toString().trim(),
@@ -685,6 +734,7 @@
     const closeButtons = document.querySelectorAll("[data-close-modal]");
     const chosenStatus = document.querySelector("#chosenStatus");
     const enterStoryboard = document.querySelector("#enterStoryboard");
+    const selectedRoutePreview = document.querySelector("#selectedRoutePreview");
 
     briefMount.innerHTML = briefSummaryHtml(project);
     enterStoryboard.href = `./storyboard.html?project=${project.id}`;
@@ -706,8 +756,13 @@
             <strong>为什么测</strong><span>${angle.why}</span>
             <strong>风险提示</strong><span>${angle.risk}</span>
           </div>
-          <div class="angle-outline">
-            ${angle.scenes.map((scene) => `<span class="pill">${scene}</span>`).join("")}
+          <div class="route-scenes">
+            ${angle.scenes.map((scene, index) => `
+              <div class="route-scene">
+                <strong>Scene ${index + 1}</strong>
+                <span>${scene}</span>
+              </div>
+            `).join("")}
           </div>
         </div>
       `).join("");
@@ -718,6 +773,28 @@
           ${selected.hook}
         </div>
       `;
+      if (selectedRoutePreview) {
+        selectedRoutePreview.innerHTML = `
+          <div class="card">
+            <div class="split">
+              <div>
+                <div class="eyebrow">Selected Route</div>
+                <h3>${selected.title}</h3>
+              </div>
+              <a class="btn btn-primary" href="./storyboard.html?project=${refreshed.id}">用这条进入 storyboard</a>
+            </div>
+            <p class="muted">${selected.why}</p>
+            <div class="route-scenes">
+              ${selected.scenes.map((scene, index) => `
+                <div class="route-scene">
+                  <strong>Scene ${index + 1}</strong>
+                  <span>${scene}</span>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }
     }
 
     renderAngles(project.selectedAngleId);
@@ -728,6 +805,7 @@
       const angleId = choose.dataset.choose;
       const updated = updateProject(project.id, (draft) => {
         draft.selectedAngleId = angleId;
+        draft.status = "已选路线";
         const angle = draft.angles.find((item) => item.id === angleId);
         if (angle) draft.scenes = buildScenes(draft, angle);
         return draft;
@@ -764,9 +842,12 @@
     const playerMount = document.querySelector("#playerMount");
     const sceneForm = document.querySelector("#sceneForm");
     const packageMount = document.querySelector("#packageMount");
+    const feedbackMount = document.querySelector("#feedbackMount");
     const projectBrief = document.querySelector("#workspaceBrief");
     const addSceneButton = document.querySelector("#addScene");
     const exportButton = document.querySelector("#fakeExport");
+    const sendToRenderButton = document.querySelector("#sendToRender");
+    const replaceWeakScenesButton = document.querySelector("#replaceWeakScenes");
     const backToAngles = document.querySelector("#backToAngles");
     let selectedSceneId = project.scenes[0]?.id || "";
 
@@ -889,10 +970,25 @@
           selectedRoute: selectedScene.angleTitle,
           scenes: current.scenes.length,
           readyAssets,
-          locale: selectedScene.language
+          locale: selectedScene.language,
+          generationStatus: current.pipelineStatus || "draft"
         },
         renderTargets: exportPackage(current).scenes
       }, null, 2);
+      if (feedbackMount) {
+        feedbackMount.innerHTML = current.scenes.map((scene) => `
+          <div class="feedback-row">
+            <strong>Scene ${scene.order} · ${scene.goal}</strong>
+            <span class="tiny">${scene.subtitle}</span>
+            <select data-feedback-scene="${scene.id}">
+              <option value="untested" ${scene.performance === "untested" ? "selected" : ""}>未测试</option>
+              <option value="winner" ${scene.performance === "winner" ? "selected" : ""}>表现好</option>
+              <option value="weak" ${scene.performance === "weak" ? "selected" : ""}>表现差</option>
+              <option value="stable" ${scene.performance === "stable" ? "selected" : ""}>可保留</option>
+            </select>
+          </div>
+        `).join("");
+      }
       document.querySelector("#toggleLock")?.addEventListener("click", () => {
         updateProject(project.id, (draft) => {
           const scene = draft.scenes.find((item) => item.id === selectedSceneId);
@@ -971,7 +1067,23 @@
       renderWorkspace();
     });
 
+    feedbackMount?.addEventListener("change", (event) => {
+      const select = event.target.closest("[data-feedback-scene]");
+      if (!select) return;
+      updateProject(project.id, (draft) => {
+        const scene = draft.scenes.find((item) => item.id === select.dataset.feedbackScene);
+        if (scene) scene.performance = select.value;
+        return draft;
+      });
+      renderWorkspace();
+    });
+
     exportButton.addEventListener("click", () => {
+      updateProject(project.id, (draft) => {
+        draft.pipelineStatus = "exported";
+        draft.status = "已导出";
+        return draft;
+      });
       const current = currentProject();
       packageMount.textContent = JSON.stringify({
         summary: {
@@ -984,6 +1096,45 @@
       exportButton.textContent = "已更新生成任务";
       setTimeout(() => {
         exportButton.textContent = "更新生成任务";
+      }, 1200);
+    });
+
+    sendToRenderButton?.addEventListener("click", () => {
+      updateProject(project.id, (draft) => {
+        draft.pipelineStatus = "rendering";
+        draft.status = "生成中";
+        draft.scenes = draft.scenes.map((scene) => ({
+          ...scene,
+          assetStatus: scene.assetStatus.includes("已") ? scene.assetStatus : "视频排队中"
+        }));
+        return draft;
+      });
+      renderWorkspace();
+      sendToRenderButton.textContent = "已进入生成链路";
+      setTimeout(() => {
+        sendToRenderButton.textContent = "进入生成链路";
+      }, 1200);
+    });
+
+    replaceWeakScenesButton?.addEventListener("click", () => {
+      updateProject(project.id, (draft) => {
+        draft.scenes = draft.scenes.map((scene) => {
+          if (scene.performance !== "weak") return scene;
+          return {
+            ...scene,
+            subtitle: `${scene.subtitle}（新变体）`,
+            visual: `${scene.visual}，改成新的表现方式`,
+            assetStatus: "待替换镜头",
+            performance: "untested"
+          };
+        });
+        draft.status = "待替换镜头";
+        return draft;
+      });
+      renderWorkspace();
+      replaceWeakScenesButton.textContent = "已标记替换";
+      setTimeout(() => {
+        replaceWeakScenesButton.textContent = "替换弱表现镜头";
       }, 1200);
     });
   }
