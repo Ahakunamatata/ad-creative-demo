@@ -80,6 +80,9 @@
           </div>
         </div>
         <div id="parsedProductCard"></div>
+        <div class="button-row">
+          <button class="btn btn-primary" type="button" data-next-step="2">下一步：选择模板</button>
+        </div>
       </section>
 
       <section class="hidden" data-step-section="2">
@@ -91,6 +94,10 @@
           <h3>补充这类模板需要的细节</h3>
           <p class="muted">不同模板会要求不同输入，比如剧情情境、hook 限制或 winner 保留元素。</p>
           <div class="field-grid" id="templateFields"></div>
+        </div>
+        <div class="button-row">
+          <button class="btn btn-ghost" type="button" data-prev-step="1">返回上一步</button>
+          <button class="btn btn-primary" type="button" data-next-step="3">下一步：填写 brief</button>
         </div>
       </section>
 
@@ -147,16 +154,22 @@
           <label for="referenceAds">参考素材</label>
           <textarea id="referenceAds" name="referenceAds" placeholder="粘贴竞品广告链接、描述或你想保留的结构"></textarea>
         </div>
+        <div class="button-row">
+          <button class="btn btn-ghost" type="button" data-prev-step="2">返回上一步</button>
+          <button class="btn btn-primary" type="button" data-next-step="4">下一步：预览任务卡</button>
+        </div>
       </section>
 
       <section class="hidden" data-step-section="4">
         <div class="eyebrow">Step 4</div>
         <h2>生成创意路线</h2>
+        <div id="briefPreview"></div>
         <div class="notice">
           <strong>下一步</strong>
           <p class="muted">系统会基于当前 brief 生成 3 条脚本路线。你选中其中一条后，再进入 storyboard 工作区继续编辑。</p>
         </div>
         <div class="button-row">
+          <button class="btn btn-ghost" type="button" data-prev-step="3">返回上一步</button>
           <button class="btn btn-primary" type="button" id="generateBrief">生成路线并进入下一步</button>
         </div>
       </section>
