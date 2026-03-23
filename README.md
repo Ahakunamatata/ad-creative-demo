@@ -35,6 +35,7 @@ http://127.0.0.1:8786/demo/index.html
 - Framework Preset：`Other`
 - Root Directory：`demo`
 - Output Directory：留空
+- 当前仓库结构已经按 `demo/` 作为部署根目录组织
 
 如果 Vercel 提示 `Project "ad-creative-demo" already exists`，请改一个新名字，例如：
 
