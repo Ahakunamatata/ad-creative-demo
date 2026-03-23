@@ -63,8 +63,14 @@
         <h2>镜头设置</h2>
         <p class="muted">修改当前镜头的脚本、字幕、配音和多语言版本。</p>
         <form class="field-grid" id="sceneForm"></form>
-        <div class="eyebrow">Render Queue</div>
+        <div class="eyebrow">Production Package</div>
+        <div class="button-row">
+          <button class="btn btn-secondary" type="button" id="sendToRender">进入生成链路</button>
+          <button class="btn btn-ghost" type="button" id="replaceWeakScenes">替换弱表现镜头</button>
+        </div>
         <div class="code-block" id="packageMount"></div>
+        <div class="eyebrow">Test Feedback</div>
+        <div class="field-grid" id="feedbackMount"></div>
       </aside>
     </section>
   </div>
