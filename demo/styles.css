@@ -312,6 +312,106 @@ button {
   align-items: start;
 }
 
+.page-wizard .hero,
+.page-routes .hero,
+.page-storyboard .hero {
+  padding: 24px 28px;
+}
+
+.page-wizard .hero h1,
+.page-routes .hero h1,
+.page-storyboard .hero h1 {
+  font-size: clamp(2rem, 2.8vw, 2.85rem);
+  max-width: 13ch;
+}
+
+.page-wizard .hero-copy,
+.page-routes .hero-copy,
+.page-storyboard .hero-copy {
+  gap: 10px;
+}
+
+.page-wizard .hero p,
+.page-routes .hero p,
+.page-storyboard .hero p {
+  max-width: 58ch;
+}
+
+.page-wizard .wizard-main {
+  gap: 20px;
+}
+
+.page-wizard .wizard-main > section {
+  display: grid;
+  gap: 18px;
+}
+
+.page-wizard .wizard-sidebar {
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+}
+
+.page-wizard .stepper {
+  gap: 10px;
+}
+
+.page-wizard .step-chip {
+  min-height: 76px;
+  align-content: start;
+}
+
+.page-wizard .picker-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.page-wizard .picker-card {
+  min-height: 104px;
+  align-content: start;
+}
+
+.page-wizard .hint {
+  min-width: 280px;
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.page-routes .route-layout {
+  grid-template-columns: 330px minmax(0, 1fr);
+}
+
+.page-routes .status-card,
+.page-routes .selected-route {
+  padding: 18px 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.page-routes .selected-route {
+  background:
+    linear-gradient(180deg, rgba(216, 142, 78, 0.14), rgba(255, 255, 255, 0.95)),
+    var(--panel);
+}
+
+.page-routes .route-main {
+  gap: 18px;
+}
+
+.page-routes .route-card {
+  padding: 18px 20px;
+}
+
+.page-routes .route-card > p,
+.page-routes .status-card > p {
+  line-height: 1.65;
+}
+
+.page-routes .route-card .route-outline {
+  gap: 10px;
+}
+
 .layout-2.route-layout {
   grid-template-columns: 360px minmax(0, 1fr);
 }
@@ -424,6 +524,12 @@ textarea:focus-visible {
   border-radius: var(--radius-md);
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.76);
+}
+
+.brief-card {
+  padding: 18px;
+  display: grid;
+  gap: 14px;
 }
 
 .stat-card,

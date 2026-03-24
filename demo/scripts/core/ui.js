@@ -155,14 +155,11 @@ export function renderRoutePreview(angle, taskId) {
         </div>
         <a class="btn btn-primary" href="${escapeHtml(makeHref("/storyboard.html", { task: taskId }))}" id="enterStoryboardFromPreview">进入 Storyboard</a>
       </div>
-      <p class="muted">${escapeHtml(angle.rationale)}</p>
-      <div class="route-outline">
-        ${angle.scenes.map((scene, index) => `
-          <div class="route-scene">
-            <strong>镜头 ${index + 1}</strong>
-            <span>${escapeHtml(scene)}</span>
-          </div>
-        `).join("")}
+      <p class="muted">${escapeHtml(angle.hook)}</p>
+      <div class="meta-grid">
+        <span><strong>情绪推进</strong>${escapeHtml(angle.emotion)}</span>
+        <span><strong>测试理由</strong>${escapeHtml(angle.rationale)}</span>
+        <span><strong>风险提醒</strong>${escapeHtml(angle.risk)}</span>
       </div>
     </div>
   `;
