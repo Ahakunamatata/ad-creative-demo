@@ -231,7 +231,8 @@ button {
 }
 
 .task-grid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: stretch;
 }
 
 .app-grid {
@@ -266,6 +267,30 @@ button {
   padding: 18px;
   display: grid;
   gap: 14px;
+}
+
+.page-home .hero {
+  padding: 28px 30px 30px;
+}
+
+.page-home .task-card-head {
+  align-items: flex-start;
+}
+
+.page-home .create-card {
+  background:
+    linear-gradient(180deg, rgba(216, 142, 78, 0.18), rgba(255, 251, 245, 0.82)),
+    var(--panel);
+}
+
+.page-home .create-card h3 {
+  max-width: 12ch;
+}
+
+@media (min-width: 1200px) {
+  .page-home .create-card {
+    grid-column: span 2;
+  }
 }
 
 .task-card.create-card {
@@ -412,6 +437,39 @@ textarea:focus-visible {
 .stat-card strong {
   font-size: 24px;
   font-family: var(--display);
+}
+
+.task-card-project,
+.app-card-library {
+  grid-template-rows: auto auto 1fr auto;
+  min-height: 264px;
+}
+
+.task-summary {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.task-meta-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(83, 66, 39, 0.1);
+}
+
+.task-meta-strip span {
+  display: grid;
+  gap: 4px;
+  font-size: var(--text-sm);
+}
+
+.task-meta-strip strong {
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .soft-item {

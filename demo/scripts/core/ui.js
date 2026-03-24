@@ -13,7 +13,7 @@ export function renderSystemNotice(notice) {
 
 export function renderTaskCard(task) {
   return `
-    <article class="task-card" data-task-card="${escapeHtml(task.id)}">
+    <article class="task-card task-card-project" data-task-card="${escapeHtml(task.id)}">
       <div class="task-card-head">
         <div>
           <div class="eyebrow">${escapeHtml(task.appSnapshot.name)}</div>
@@ -21,11 +21,11 @@ export function renderTaskCard(task) {
         </div>
         <span class="chip warm">${escapeHtml(formatStatusLabel(task.status))}</span>
       </div>
-      <p class="muted">${escapeHtml(task.brief.corePain)}</p>
-      <div class="meta-grid">
+      <p class="task-summary">${escapeHtml(task.brief.corePain)}</p>
+      <div class="task-meta-strip">
         <span><strong>模板</strong>${escapeHtml(TEMPLATE_CATALOG[task.templateId]?.shortLabel || task.templateId)}</span>
         <span><strong>平台</strong>${escapeHtml(formatPlatformLabel(task.brief.targetPlatform))}</span>
-        <span><strong>最近更新</strong>${escapeHtml(formatUpdatedAt(task.updatedAt))}</span>
+        <span><strong>更新</strong>${escapeHtml(formatUpdatedAt(task.updatedAt))}</span>
       </div>
       <div class="button-row">
         <a class="btn btn-ghost" href="${escapeHtml(makeHref("/angles.html", { task: task.id }))}">看路线</a>
@@ -37,12 +37,12 @@ export function renderTaskCard(task) {
 
 export function renderNewTaskCard() {
   return `
-    <article class="task-card create-card">
+    <article class="task-card create-card task-card-project">
       <div>
         <div class="eyebrow">Create</div>
         <h3>新建一个广告任务</h3>
       </div>
-      <p class="muted">从已保存 App 开始，或贴一个新的商店链接。先整理 brief，再进入路线选择和 storyboard。</p>
+      <p class="task-summary">从已保存 App 开始，或贴一个新的商店链接。先整理 brief，再进入路线选择和 storyboard。</p>
       <div class="button-row">
         <a class="btn btn-primary" href="/new-project.html">创建任务</a>
       </div>
@@ -52,7 +52,7 @@ export function renderNewTaskCard() {
 
 export function renderSavedAppCard(app) {
   return `
-    <article class="app-card">
+    <article class="app-card app-card-library">
       <div class="task-card-head">
         <div class="app-id">
           <span class="app-icon">${escapeHtml(app.icon)}</span>
@@ -63,8 +63,8 @@ export function renderSavedAppCard(app) {
         </div>
         <span class="chip">${escapeHtml(app.category)}</span>
       </div>
-      <p class="muted">${escapeHtml(app.description)}</p>
-      <div class="meta-grid">
+      <p class="task-summary">${escapeHtml(app.description)}</p>
+      <div class="task-meta-strip">
         <span><strong>受众</strong>${escapeHtml(app.audience)}</span>
         <span><strong>最近使用</strong>${escapeHtml(formatUpdatedAt(app.updatedAt))}</span>
       </div>
@@ -78,6 +78,7 @@ export function renderSavedAppCard(app) {
 export function renderExampleCards() {
   return HOME_EXAMPLES.map((example) => `
     <article class="mini-card">
+      <div class="eyebrow">Example</div>
       <h4>${escapeHtml(example.title)}</h4>
       <p class="muted">${escapeHtml(example.summary)}</p>
     </article>

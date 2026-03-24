@@ -21,9 +21,9 @@ const activeTaskCount = workspace.tasks.filter((task) => ["storyboard", "exporte
 function renderStats() {
   taskStats.innerHTML = `
     <article class="stat-card"><span>任务总数</span><strong>${taskCount}</strong></article>
-    <article class="stat-card"><span>Saved Apps</span><strong>${appCount}</strong></article>
+    <article class="stat-card"><span>已保存 App</span><strong>${appCount}</strong></article>
     <article class="stat-card"><span>在制作中</span><strong>${activeTaskCount}</strong></article>
-    <article class="stat-card"><span>当前阶段</span><strong>Front-end Demo</strong></article>
+    <article class="stat-card"><span>当前版本</span><strong>前端原型</strong></article>
   `;
 }
 
