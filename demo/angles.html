@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>策略选择 · App UA Storyboard Workbench</title>
+  <title>Creative Studio · Routes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -21,7 +24,7 @@
 
     <section class="hero">
       <div class="hero-row">
-        <div class="grid">
+        <div class="hero-copy">
           <div class="eyebrow">Routes</div>
           <h1>先选脚本走向，再开始做镜头。</h1>
           <p>这里每条路线都已经带上 hook 逻辑、情绪推进和分镜骨架。你选中的不是一句文案，而是一套可继续编辑的结构。</p>
@@ -30,14 +33,17 @@
       </div>
     </section>
 
-    <section class="layout-2">
+    <div id="routeNotice"></div>
+    <div id="routeGuard"></div>
+
+    <section class="layout-2 route-layout">
       <aside class="panel">
         <div class="eyebrow">Brief</div>
         <h2>当前视频任务</h2>
         <div id="briefMount"></div>
       </aside>
 
-      <div class="panel">
+      <div class="panel route-main">
         <div class="split">
           <div>
             <div class="eyebrow">Options</div>
@@ -45,8 +51,8 @@
           </div>
           <button class="btn btn-secondary" type="button" id="moreAngles">生成更多</button>
         </div>
-        <div id="selectedRoutePreview"></div>
-        <div class="angle-grid" id="angleGrid"></div>
+        <div id="routePreview"></div>
+        <div class="route-list" id="routeList"></div>
       </div>
     </section>
   </div>
@@ -56,10 +62,10 @@
       <div class="eyebrow">Generate More</div>
       <h2>继续扩展新的脚本方向</h2>
       <p class="muted">你可以补一个偏好，也可以直接让系统给出更多路线。</p>
-      <div class="field">
-        <label for="anglePrompt">想强调什么？</label>
+      <label class="field">
+        <span>想强调什么？</span>
         <textarea id="anglePrompt" placeholder="例如：减少抓马感，更像真实用户自拍视频；或者强调更高转化的 CTA"></textarea>
-      </div>
+      </label>
       <div class="button-row">
         <button class="btn btn-ghost" type="button" data-close-modal>取消</button>
         <button class="btn btn-primary" type="button" id="generateMoreAngles">生成新路线</button>
@@ -67,6 +73,6 @@
     </div>
   </div>
 
-  <script src="./app.js"></script>
+  <script type="module" src="./scripts/pages/angles.js"></script>
 </body>
 </html>

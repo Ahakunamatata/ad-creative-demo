@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Storyboard 工作区 · App UA Storyboard Workbench</title>
+  <title>Creative Studio · Storyboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -16,65 +19,67 @@
       <div class="button-row">
         <a class="btn btn-ghost" href="./angles.html" id="backToAngles">返回路线页</a>
         <a class="btn btn-ghost" href="./index.html">返回首页</a>
+        <button class="btn btn-secondary" type="button" id="simulateFeedback">模拟测试结果</button>
+        <button class="btn btn-primary" type="button" id="exportVideo">导出最终视频</button>
       </div>
     </header>
 
     <section class="hero">
       <div class="hero-row">
-        <div class="grid">
+        <div class="hero-copy">
           <div class="eyebrow">Studio</div>
-          <h1>从脚本到镜头都在一个工作区里完成。</h1>
-          <p>左边挑镜头，中间预览整体节奏，底部调整顺序，右边编辑字幕、配音和语言版本。</p>
+          <h1>同一个工作区里继续做镜头、字幕和节奏复盘</h1>
+          <p>左侧挑镜头，中间看当前素材，底部排时间线，右侧只改当前 Scene。测试结果也回流到同一页，不跳新页面。</p>
         </div>
         <div class="button-row">
           <button class="btn btn-secondary" type="button" id="addScene">新增分镜</button>
-          <button class="btn btn-primary" type="button" id="fakeExport">更新生成任务</button>
+          <div class="chip-row" id="sceneStatus"></div>
         </div>
       </div>
     </section>
 
+    <div id="storyboardNotice"></div>
+    <div id="storyboardGuard"></div>
+    <div id="feedbackBanner"></div>
+
     <section class="panel">
       <div class="eyebrow">Workspace Brief</div>
-      <div id="workspaceBrief"></div>
+      <div id="briefStrip"></div>
     </section>
 
-    <section class="workspace">
-      <aside class="panel">
+    <section class="storyboard-grid">
+      <aside class="panel rail-panel">
         <div class="eyebrow">Scenes</div>
         <h2>镜头列表</h2>
-        <p class="muted">点击任一镜头，同步更新中间预览、底部时间线和右侧编辑区。</p>
-        <div class="scene-list" id="sceneList"></div>
+        <p class="muted">镜头可以是图，也可以是视频。图镜头仍能进入整条预览，直到你决定把它生成为视频。</p>
+        <div class="scene-rail" id="sceneRail"></div>
       </aside>
 
-      <main class="panel">
+      <main class="panel preview-panel">
         <div class="eyebrow">Preview</div>
-        <div id="playerMount"></div>
-        <div class="split">
-          <div>
-            <h3>时间线</h3>
-            <p class="muted">拖动前的关键操作都集中在这里：换顺序、拆镜头、插新镜头。</p>
-          </div>
-        </div>
-        <div class="timeline" id="timeline"></div>
+        <div id="previewStage"></div>
       </main>
 
-      <aside class="panel">
+      <aside class="panel editor-panel">
         <div class="eyebrow">Edit</div>
         <h2>镜头设置</h2>
-        <p class="muted">修改当前镜头的脚本、字幕、配音和多语言版本。</p>
-        <form class="field-grid" id="sceneForm"></form>
-        <div class="eyebrow">Production Package</div>
-        <div class="button-row">
-          <button class="btn btn-secondary" type="button" id="sendToRender">进入生成链路</button>
-          <button class="btn btn-ghost" type="button" id="replaceWeakScenes">替换弱表现镜头</button>
-        </div>
-        <div class="code-block" id="packageMount"></div>
-        <div class="eyebrow">Test Feedback</div>
-        <div class="field-grid" id="feedbackMount"></div>
+        <p class="muted">保存点是显式的。先在右侧改，再决定保存或继续迭代。</p>
+        <form class="field-grid" id="sceneEditor"></form>
       </aside>
+    </section>
+
+    <section class="panel">
+      <div class="split">
+        <div>
+          <div class="eyebrow">Timeline</div>
+          <h2>底部时间线</h2>
+        </div>
+        <p class="muted">镜头是统一的 Scene 对象，只通过 media.type 区分图和视频。</p>
+      </div>
+      <div class="timeline" id="timeline"></div>
     </section>
   </div>
 
-  <script src="./app.js"></script>
+  <script type="module" src="./scripts/pages/storyboard.js"></script>
 </body>
 </html>

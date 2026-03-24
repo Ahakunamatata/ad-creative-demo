@@ -3,15 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>新建项目 · App UA Storyboard Workbench</title>
+  <title>Creative Studio · New Task</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div class="shell">
     <header class="topbar">
       <div class="brand">
-        <strong>创建新视频</strong>
-        <span>先识别产品，再补这轮测试目标和创意约束。</span>
+        <strong>New Task Wizard</strong>
+        <span>先选 App，再补这轮测试目标和创意约束。</span>
       </div>
       <div class="button-row">
         <a class="btn btn-ghost" href="./index.html">返回首页</a>
@@ -20,162 +23,181 @@
 
     <section class="hero">
       <div class="hero-row">
-        <div class="grid">
-          <div class="eyebrow">Start</div>
-          <h1>把产品信息、测试目标和参考素材整理成一个清晰 brief。</h1>
-          <p>链接能识别的内容尽量自动识别，只有影响脚本和分镜的关键输入需要你补充。</p>
+        <div class="hero-copy">
+          <div class="eyebrow">Wizard</div>
+          <h1>先选 App，再补这轮测试目标</h1>
+          <p>链接能识别的内容尽量自动识别。只有影响脚本和分镜的关键信息才需要你输入。</p>
         </div>
         <div class="hint">
-          <strong>建议做法</strong>
-          <p class="muted">先贴产品链接，再补参考素材和本轮目标，通常 2 分钟内就能进入策略页。</p>
+          <strong>这页负责什么</strong>
+          <p class="muted">选已有 App 或导入新 App、补 brief、选模板，然后生成 4 条路线。</p>
         </div>
       </div>
       <div class="stepper">
         <button class="step-chip active" type="button" data-step-target="1">
           <strong>Step 1</strong>
-          <small>产品识别</small>
+          <small>选择 App</small>
         </button>
         <button class="step-chip" type="button" data-step-target="2">
           <strong>Step 2</strong>
-          <small>模板选择</small>
+          <small>模板与输入</small>
         </button>
         <button class="step-chip" type="button" data-step-target="3">
           <strong>Step 3</strong>
-          <small>关键 brief</small>
+          <small>创意 brief</small>
         </button>
         <button class="step-chip" type="button" data-step-target="4">
           <strong>Step 4</strong>
-          <small>生成策略</small>
+          <small>生成路线</small>
         </button>
       </div>
     </section>
 
-    <form class="panel" id="projectWizard">
-      <section data-step-section="1">
+    <div id="wizardNotice"></div>
+
+    <div class="wizard-layout">
+      <form class="panel wizard-main" id="wizardForm">
+        <section data-step-section="1">
+          <div class="split">
+            <div>
+              <div class="eyebrow">Step 1</div>
+              <h2>选择已有 App 或导入新 App</h2>
+            </div>
+          </div>
+          <div class="field-stack">
+            <label class="field">
+              <span>已保存 App</span>
+              <div class="picker-grid" id="wizardSavedApps"></div>
+            </label>
+            <div class="field-grid two-col">
+              <label class="field">
+                <span>任务名称</span>
+                <input id="projectTitle" name="projectTitle" placeholder="例如：TrackMate / 新 hook / T2">
+              </label>
+              <label class="field">
+                <span>App Store / Google Play 链接</span>
+                <div class="inline-input">
+                  <input id="storeUrl" name="storeUrl" placeholder="粘贴产品商店链接">
+                  <button class="btn btn-secondary" type="button" id="detectStoreButton">自动识别</button>
+                </div>
+              </label>
+            </div>
+            <div id="selectedAppCard"></div>
+            <div id="detectedAppCard"></div>
+          </div>
+          <div class="button-row">
+            <button class="btn btn-primary" type="button" data-next-step="2">下一步：模板与输入</button>
+          </div>
+        </section>
+
+        <section class="hidden" data-step-section="2">
+          <div class="eyebrow">Step 2</div>
+          <h2>选择模板并补充模板专属输入</h2>
+          <div class="template-grid" id="templateGrid"></div>
+          <div class="panel inset-panel">
+            <div class="eyebrow">Template Inputs</div>
+            <h3>这类任务还需要什么细节？</h3>
+            <p class="muted">不同模板会要求不同输入，比如情境 seed、hook 限制或 winner 保留元素。</p>
+            <div class="field-grid" id="templateFields"></div>
+          </div>
+          <div class="button-row">
+            <button class="btn btn-ghost" type="button" data-prev-step="1">返回上一步</button>
+            <button class="btn btn-primary" type="button" data-next-step="3">下一步：创意 brief</button>
+          </div>
+        </section>
+
+        <section class="hidden" data-step-section="3">
+          <div class="eyebrow">Step 3</div>
+          <h2>补这轮投放和创意目标</h2>
+          <div class="field-grid two-col">
+            <label class="field">
+              <span>目标平台</span>
+              <select id="targetPlatform" name="targetPlatform">
+                <option value="meta">Meta</option>
+                <option value="tiktok">TikTok</option>
+                <option value="google_uac">Google UAC</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>创意目标</span>
+              <select id="creativeGoal" name="creativeGoal">
+                <option value="angle expansion">angle expansion</option>
+                <option value="new hook test">new hook test</option>
+                <option value="winner iteration">winner iteration</option>
+              </select>
+            </label>
+          </div>
+          <div class="field-grid two-col">
+            <label class="field">
+              <span>目标受众</span>
+              <input id="targetAudience" name="targetAudience" placeholder="例如：US women 25-34, relationship anxiety">
+            </label>
+            <label class="field">
+              <span>CTA</span>
+              <input id="cta" name="cta" value="Download now">
+            </label>
+          </div>
+          <label class="field">
+            <span>核心痛点</span>
+            <textarea id="corePain" name="corePain" placeholder="系统会尽量自动识别，但这里可以人工纠正。"></textarea>
+          </label>
+          <label class="field">
+            <span>核心承诺</span>
+            <textarea id="corePromise" name="corePromise" placeholder="产品到底提供了什么明确解决路径？"></textarea>
+          </label>
+          <div class="field-grid two-col">
+            <label class="field">
+              <span>必须包含</span>
+              <textarea id="mustInclude" name="mustInclude" placeholder="例如：地图 UI、品牌 icon、人物表情"></textarea>
+            </label>
+            <label class="field">
+              <span>必须避免</span>
+              <textarea id="mustAvoid" name="mustAvoid" placeholder="例如：违规暗示、夸张承诺、太像监控"></textarea>
+            </label>
+          </div>
+          <div class="field-grid two-col">
+            <label class="field">
+              <span>参考素材</span>
+              <textarea id="referenceAds" name="referenceAds" placeholder="粘贴竞品广告、winner 编号或你想保留的结构"></textarea>
+            </label>
+            <label class="field">
+              <span>Story seed</span>
+              <textarea id="storySeed" name="storySeed" placeholder="补一句你想强调的剧情 / 开场方向"></textarea>
+            </label>
+          </div>
+          <div class="button-row">
+            <button class="btn btn-ghost" type="button" data-prev-step="2">返回上一步</button>
+            <button class="btn btn-primary" type="button" data-next-step="4">下一步：生成路线</button>
+          </div>
+        </section>
+
+        <section class="hidden" data-step-section="4">
+          <div class="eyebrow">Step 4</div>
+          <h2>确认 brief，然后生成路线</h2>
+          <div id="briefPreview"></div>
+          <div class="notice">
+            <strong>下一步会发生什么</strong>
+            <p class="muted">系统会基于当前 brief 生成 4 条路线。你在路线页选中一条后，才进入 storyboard 工作区。</p>
+          </div>
+          <div class="button-row">
+            <button class="btn btn-ghost" type="button" data-prev-step="3">返回上一步</button>
+            <button class="btn btn-primary" type="button" id="generateTask">生成路线并进入下一步</button>
+          </div>
+        </section>
+      </form>
+
+      <aside class="panel wizard-sidebar">
         <div class="split">
           <div>
-            <div class="eyebrow">Step 1</div>
-            <h2>导入产品信息</h2>
-          </div>
-          <button class="btn btn-secondary" type="button" id="parseStoreButton">自动识别</button>
-        </div>
-        <div class="field-grid two-col">
-          <div class="field">
-            <label for="projectName">项目名称</label>
-            <input id="projectName" name="projectName" placeholder="例如：TrackMate 夜间关系焦虑版">
-          </div>
-          <div class="field">
-            <label for="appStoreUrl">App Store / Google Play 链接</label>
-            <input id="appStoreUrl" name="appStoreUrl" placeholder="粘贴产品商店链接">
+            <div class="eyebrow">Task Summary</div>
+            <h2>当前任务摘要</h2>
           </div>
         </div>
-        <div class="field-grid two-col">
-          <div class="field">
-            <label for="appName">产品名称</label>
-            <input id="appName" name="appName" placeholder="可自动填充，也可手动改">
-          </div>
-          <div class="field">
-            <label for="appCategory">产品类别</label>
-            <input id="appCategory" name="appCategory" placeholder="例如：Utility / Location Tracking">
-          </div>
-        </div>
-        <div id="parsedProductCard"></div>
-        <div class="button-row">
-          <button class="btn btn-primary" type="button" data-next-step="2">下一步：选择模板</button>
-        </div>
-      </section>
-
-      <section class="hidden" data-step-section="2">
-        <div class="eyebrow">Step 2</div>
-        <h2>选择创意结构</h2>
-        <div class="template-grid" id="templateGrid"></div>
-        <div class="panel">
-          <div class="eyebrow">Template Inputs</div>
-          <h3>补充这类模板需要的细节</h3>
-          <p class="muted">不同模板会要求不同输入，比如剧情情境、hook 限制或 winner 保留元素。</p>
-          <div class="field-grid" id="templateFields"></div>
-        </div>
-        <div class="button-row">
-          <button class="btn btn-ghost" type="button" data-prev-step="1">返回上一步</button>
-          <button class="btn btn-primary" type="button" data-next-step="3">下一步：填写 brief</button>
-        </div>
-      </section>
-
-      <section class="hidden" data-step-section="3">
-        <div class="eyebrow">Step 3</div>
-        <h2>补本轮测试目标</h2>
-        <div class="field-grid two-col">
-          <div class="field">
-            <label for="targetPlatform">目标平台</label>
-            <select id="targetPlatform" name="targetPlatform">
-              <option value="meta">Meta</option>
-              <option value="tiktok">TikTok</option>
-              <option value="google-uac">Google UAC</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="creativeGoal">创意目标</label>
-            <select id="creativeGoal" name="creativeGoal">
-              <option value="new hook test">new hook test</option>
-              <option value="angle expansion">angle expansion</option>
-              <option value="winner iteration">winner iteration</option>
-            </select>
-          </div>
-        </div>
-        <div class="field-grid two-col">
-          <div class="field">
-            <label for="targetAudience">目标受众</label>
-            <input id="targetAudience" name="targetAudience" placeholder="例如：US women 25-34, relationship anxiety">
-          </div>
-          <div class="field">
-            <label for="cta">CTA</label>
-            <input id="cta" name="cta" value="Download now">
-          </div>
-        </div>
-        <div class="field">
-          <label for="corePain">核心痛点</label>
-          <textarea id="corePain" name="corePain" placeholder="系统会尽量自动识别，但这里可以人工纠正。"></textarea>
-        </div>
-        <div class="field">
-          <label for="corePromise">核心承诺</label>
-          <textarea id="corePromise" name="corePromise" placeholder="产品到底提供了什么明确的解决路径？"></textarea>
-        </div>
-        <div class="field-grid two-col">
-          <div class="field">
-            <label for="mustInclude">必须包含</label>
-            <textarea id="mustInclude" name="mustInclude" placeholder="例如：地图 UI、品牌 icon、指定角色"></textarea>
-          </div>
-          <div class="field">
-            <label for="mustAvoid">必须避免</label>
-            <textarea id="mustAvoid" name="mustAvoid" placeholder="例如：违规承诺、硬插产品、过度夸张"></textarea>
-          </div>
-        </div>
-        <div class="field">
-          <label for="referenceAds">参考素材</label>
-          <textarea id="referenceAds" name="referenceAds" placeholder="粘贴竞品广告链接、描述或你想保留的结构"></textarea>
-        </div>
-        <div class="button-row">
-          <button class="btn btn-ghost" type="button" data-prev-step="2">返回上一步</button>
-          <button class="btn btn-primary" type="button" data-next-step="4">下一步：预览任务卡</button>
-        </div>
-      </section>
-
-      <section class="hidden" data-step-section="4">
-        <div class="eyebrow">Step 4</div>
-        <h2>生成创意路线</h2>
-        <div id="briefPreview"></div>
-        <div class="notice">
-          <strong>下一步</strong>
-          <p class="muted">系统会基于当前 brief 生成 3 条脚本路线。你选中其中一条后，再进入 storyboard 工作区继续编辑。</p>
-        </div>
-        <div class="button-row">
-          <button class="btn btn-ghost" type="button" data-prev-step="3">返回上一步</button>
-          <button class="btn btn-primary" type="button" id="generateBrief">生成路线并进入下一步</button>
-        </div>
-      </section>
-    </form>
+        <div id="wizardSummary"></div>
+      </aside>
+    </div>
   </div>
 
-  <script src="./app.js"></script>
+  <script type="module" src="./scripts/pages/wizard.js"></script>
 </body>
 </html>
