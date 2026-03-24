@@ -12,12 +12,12 @@ export const TASK_STATUS = {
 };
 
 export const TASK_STATUS_LABELS = {
-  [TASK_STATUS.DRAFT]: "Draft",
-  [TASK_STATUS.BRIEF_READY]: "Brief Ready",
-  [TASK_STATUS.ROUTES_READY]: "Routes Ready",
-  [TASK_STATUS.STORYBOARD]: "Storyboard",
-  [TASK_STATUS.EXPORTED]: "Exported",
-  [TASK_STATUS.FEEDBACK_REVIEW]: "Feedback Review"
+  [TASK_STATUS.DRAFT]: "草稿中",
+  [TASK_STATUS.BRIEF_READY]: "Brief 已就绪",
+  [TASK_STATUS.ROUTES_READY]: "待选路线",
+  [TASK_STATUS.STORYBOARD]: "分镜制作中",
+  [TASK_STATUS.EXPORTED]: "已导出",
+  [TASK_STATUS.FEEDBACK_REVIEW]: "测试复盘中"
 };
 
 export const FEEDBACK_STATUS_LABELS = {

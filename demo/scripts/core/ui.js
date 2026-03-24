@@ -39,8 +39,8 @@ export function renderNewTaskCard() {
   return `
     <article class="task-card create-card">
       <div>
-        <div class="eyebrow">New Task</div>
-        <h3>+ 创建一个新视频任务</h3>
+        <div class="eyebrow">Create</div>
+        <h3>新建一个广告任务</h3>
       </div>
       <p class="muted">从已保存 App 开始，或贴一个新的商店链接。先整理 brief，再进入路线选择和 storyboard。</p>
       <div class="button-row">
@@ -121,21 +121,21 @@ export function renderRouteCard(angle, selectedAngleId) {
     <article class="route-card ${selected ? "selected" : ""}" data-route-card="${escapeHtml(angle.id)}">
       <div class="task-card-head">
         <div>
-          <div class="eyebrow">${selected ? "Selected" : "Route"}</div>
+          <div class="eyebrow">${selected ? "已选路线" : "候选路线"}</div>
           <h3>${escapeHtml(angle.title)}</h3>
         </div>
-        <button class="btn ${selected ? "btn-secondary" : "btn-ghost"}" type="button" data-route-select="${escapeHtml(angle.id)}">${selected ? "当前路线" : "选这条"}</button>
+        <button class="btn ${selected ? "btn-secondary" : "btn-ghost"}" type="button" data-route-select="${escapeHtml(angle.id)}">${selected ? "当前路线" : "选择这条"}</button>
       </div>
       <p>${escapeHtml(angle.hook)}</p>
       <div class="meta-grid">
-        <span><strong>情绪</strong>${escapeHtml(angle.emotion)}</span>
-        <span><strong>为什么测</strong>${escapeHtml(angle.rationale)}</span>
-        <span><strong>风险</strong>${escapeHtml(angle.risk)}</span>
+        <span><strong>情绪推进</strong>${escapeHtml(angle.emotion)}</span>
+        <span><strong>测试理由</strong>${escapeHtml(angle.rationale)}</span>
+        <span><strong>风险提醒</strong>${escapeHtml(angle.risk)}</span>
       </div>
       <div class="route-outline">
         ${angle.scenes.map((scene, index) => `
           <div class="route-scene">
-            <strong>Scene ${index + 1}</strong>
+            <strong>镜头 ${index + 1}</strong>
             <span>${escapeHtml(scene)}</span>
           </div>
         `).join("")}
@@ -149,7 +149,7 @@ export function renderRoutePreview(angle, taskId) {
     <div class="selected-route">
       <div class="task-card-head">
         <div>
-          <div class="eyebrow">Selected Route</div>
+          <div class="eyebrow">已选路线</div>
           <h3>${escapeHtml(angle.title)}</h3>
         </div>
         <a class="btn btn-primary" href="${escapeHtml(makeHref("/storyboard.html", { task: taskId }))}" id="enterStoryboardFromPreview">进入 Storyboard</a>
@@ -158,7 +158,7 @@ export function renderRoutePreview(angle, taskId) {
       <div class="route-outline">
         ${angle.scenes.map((scene, index) => `
           <div class="route-scene">
-            <strong>Scene ${index + 1}</strong>
+            <strong>镜头 ${index + 1}</strong>
             <span>${escapeHtml(scene)}</span>
           </div>
         `).join("")}
@@ -188,7 +188,7 @@ export function renderSceneRailItem(scene, active) {
     <button class="scene-rail-item ${active ? "active" : ""}" type="button" data-scene-select="${escapeHtml(scene.id)}">
       <div class="task-card-head">
         <div>
-          <small>Scene ${escapeHtml(String(scene.order))}</small>
+          <small>镜头 ${escapeHtml(String(scene.order))}</small>
           <strong>${escapeHtml(scene.title)}</strong>
         </div>
         <span class="chip ${scene.feedbackStatus === "weak" ? "danger" : scene.feedbackStatus === "winner" ? "success" : ""}">${escapeHtml(formatMediaLabel(scene.media.type))}</span>
@@ -229,11 +229,11 @@ export function renderPreview(scene, task) {
         <h3>${escapeHtml(scene.title)}</h3>
         <p>${escapeHtml(scene.beat)}</p>
         <div class="preview-script">
-          <strong>Script</strong>
+          <strong>脚本</strong>
           <span>${escapeHtml(scene.script)}</span>
         </div>
         <div class="preview-script">
-          <strong>Subtitle</strong>
+          <strong>字幕</strong>
           <span>${escapeHtml(scene.subtitle)}</span>
         </div>
       </div>
@@ -247,7 +247,7 @@ export function renderFeedbackBanner(feedbackSummary) {
     <section class="panel feedback-banner">
       <div class="task-card-head">
         <div>
-          <div class="eyebrow">Feedback Review</div>
+          <div class="eyebrow">测试回流</div>
           <h2>${escapeHtml(feedbackSummary.headline)}</h2>
         </div>
         <div class="chip-row">

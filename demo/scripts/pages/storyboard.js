@@ -2,7 +2,7 @@ import { TASK_STATUS } from "../core/constants.js";
 import { createBlankScene, createSceneDraft } from "../core/mock-generators.js";
 import { createBrowserStore } from "../core/store.js";
 import { detectRuntimeMode } from "../core/test-mode.js";
-import { makeHref, readTaskId } from "../core/formatters.js";
+import { formatFeedbackLabel, formatStatusLabel, makeHref, readTaskId } from "../core/formatters.js";
 import { renderBriefCard, renderFeedbackBanner, renderGuardPanel, renderPreview, renderSceneRailItem, renderSystemNotice, renderTimelineItem } from "../core/ui.js";
 
 const mode = detectRuntimeMode();
@@ -205,9 +205,9 @@ function renderTask() {
   previewStage.innerHTML = renderPreview(scene, task);
   timeline.innerHTML = task.scenes.map((item) => renderTimelineItem(item, item.id === scene.id)).join("");
   sceneStatus.innerHTML = `
-    <span class="chip warm">${task.status}</span>
+    <span class="chip warm">${formatStatusLabel(task.status)}</span>
     <span class="chip">${scene.media.type === "image" ? "当前是图镜头" : "当前是视频镜头"}</span>
-    <span class="chip">${scene.feedbackStatus}</span>
+    <span class="chip">${formatFeedbackLabel(scene.feedbackStatus)}</span>
   `;
   renderEditor(scene);
   document.querySelector("#exportVideo").setAttribute("data-task-id", task.id);

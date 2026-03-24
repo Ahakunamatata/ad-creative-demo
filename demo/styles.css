@@ -1,22 +1,29 @@
 :root {
-  --bg: #f4ede1;
-  --panel: rgba(255, 251, 245, 0.95);
-  --panel-strong: #fffdf9;
-  --ink: #1b1712;
-  --muted: #6a6154;
-  --line: rgba(83, 66, 39, 0.16);
+  --bg: #f6efe6;
+  --panel: rgba(255, 252, 247, 0.96);
+  --panel-strong: #fffdfa;
+  --ink: #201b15;
+  --muted: #665c51;
+  --line: rgba(83, 66, 39, 0.14);
   --accent: rgb(216, 142, 78);
-  --accent-soft: rgba(216, 142, 78, 0.16);
-  --accent-ink: #7f4d1f;
+  --accent-soft: rgba(216, 142, 78, 0.13);
+  --accent-ink: #8b521f;
   --success: #2f6542;
   --danger: #7b3941;
   --warn: #8b6325;
-  --shadow: 0 28px 60px rgba(57, 34, 12, 0.08);
-  --radius-xl: 28px;
-  --radius-lg: 20px;
-  --radius-md: 16px;
-  --display: "Fraunces", Georgia, serif;
-  --sans: "Manrope", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --shadow: 0 22px 48px rgba(57, 34, 12, 0.06);
+  --radius-xl: 24px;
+  --radius-lg: 18px;
+  --radius-md: 14px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 24px;
+  --text-2xl: 34px;
+  --text-3xl: 46px;
+  --display: "Noto Serif SC", "Songti SC", serif;
+  --sans: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
 * {
@@ -31,10 +38,12 @@ body {
 
 body {
   font-family: var(--sans);
+  font-size: var(--text-md);
+  line-height: 1.58;
   color: var(--ink);
   background:
-    radial-gradient(circle at top left, rgba(216, 142, 78, 0.18), transparent 26%),
-    radial-gradient(circle at bottom right, rgba(108, 132, 120, 0.16), transparent 28%),
+    radial-gradient(circle at top left, rgba(216, 142, 78, 0.12), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(126, 139, 126, 0.1), transparent 28%),
     linear-gradient(180deg, rgba(255, 249, 241, 0.92), rgba(244, 237, 225, 1));
 }
 
@@ -56,11 +65,11 @@ button {
 }
 
 .shell {
-  max-width: 1560px;
+  max-width: 1480px;
   margin: 0 auto;
   padding: 28px;
   display: grid;
-  gap: 20px;
+  gap: 18px;
 }
 
 .hidden {
@@ -99,7 +108,12 @@ button {
 }
 
 .brand strong {
-  font-size: 18px;
+  font-size: var(--text-lg);
+  line-height: 1.2;
+}
+
+.brand span {
+  font-size: var(--text-sm);
 }
 
 .brand span,
@@ -155,13 +169,25 @@ button {
 .mini-card h3,
 .selected-route h3 {
   margin: 0;
-  line-height: 1.05;
+  line-height: 1.15;
+  text-wrap: balance;
 }
 
 .hero h1 {
   font-family: var(--display);
-  font-size: clamp(2.3rem, 4vw, 4rem);
-  max-width: 14ch;
+  font-size: clamp(2.25rem, 3.2vw, 3.55rem);
+  max-width: 11ch;
+}
+
+.panel h2,
+.task-card h3,
+.mini-card h3,
+.selected-route h3 {
+  font-size: clamp(1.25rem, 1.4vw, 1.7rem);
+}
+
+.panel h4 {
+  font-size: var(--text-md);
 }
 
 .hero p,
@@ -172,8 +198,8 @@ button {
 }
 
 .eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: 800;
   color: var(--accent-ink);
@@ -289,8 +315,10 @@ button {
 .btn {
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 11px 16px;
+  min-height: 46px;
+  padding: 11px 18px;
   background: rgba(255, 255, 255, 0.8);
+  font-weight: 700;
 }
 
 .btn:hover,
@@ -317,6 +345,20 @@ button {
 
 .btn-ghost {
   background: rgba(255, 255, 255, 0.7);
+}
+
+.btn:focus-visible,
+.tab-chip:focus-visible,
+.step-chip:focus-visible,
+.picker-card:focus-visible,
+.route-card:focus-visible,
+.scene-rail-item:focus-visible,
+.timeline-item:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(216, 142, 78, 0.26);
+  outline-offset: 2px;
 }
 
 .button-row,
@@ -385,8 +427,8 @@ button {
 .chip {
   border-radius: 999px;
   border: 1px solid var(--line);
-  padding: 7px 10px;
-  font-size: 12px;
+  padding: 7px 11px;
+  font-size: var(--text-xs);
   background: rgba(255, 255, 255, 0.84);
 }
 
@@ -431,12 +473,12 @@ button {
 .meta-list div {
   display: grid;
   gap: 4px;
-  font-size: 13px;
+  font-size: var(--text-sm);
 }
 
 .meta-grid strong,
 .meta-list strong {
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
@@ -453,7 +495,7 @@ button {
 }
 
 .field span {
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 700;
 }
 
@@ -461,7 +503,7 @@ input,
 select,
 textarea {
   width: 100%;
-  min-height: 42px;
+  min-height: 46px;
   border-radius: 12px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.94);
@@ -489,12 +531,21 @@ textarea {
 
 .step-chip {
   padding: 14px;
-  border-radius: 16px;
+  border-radius: 14px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.76);
   text-align: left;
   display: grid;
   gap: 4px;
+}
+
+.step-chip strong {
+  font-size: var(--text-md);
+}
+
+.step-chip small {
+  font-size: var(--text-sm);
+  color: var(--muted);
 }
 
 .step-chip.active {
@@ -518,11 +569,11 @@ textarea {
 }
 
 .route-scene strong {
-  font-size: 13px;
+  font-size: var(--text-sm);
 }
 
 .route-scene span {
-  font-size: 12px;
+  font-size: var(--text-sm);
   color: var(--muted);
 }
 
@@ -574,7 +625,7 @@ textarea {
 }
 
 .preview-script strong {
-  font-size: 12px;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: rgba(255, 255, 255, 0.72);
@@ -606,7 +657,7 @@ textarea {
   padding: 10px 12px;
   background: rgba(255, 255, 255, 0.74);
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--text-sm);
 }
 
 .progress-step.active {
