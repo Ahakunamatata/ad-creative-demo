@@ -325,6 +325,23 @@ button {
   max-width: 13ch;
 }
 
+.page-storyboard .hero {
+  padding: 18px 24px;
+}
+
+.page-storyboard .hero h1 {
+  font-size: clamp(1.8rem, 2.2vw, 2.35rem);
+  max-width: 14ch;
+}
+
+.page-storyboard .hero-row {
+  align-items: flex-start;
+}
+
+.page-storyboard .hero .button-row {
+  justify-content: flex-end;
+}
+
 .page-wizard .hero-copy,
 .page-routes .hero-copy,
 .page-storyboard .hero-copy {
@@ -335,6 +352,12 @@ button {
 .page-routes .hero p,
 .page-storyboard .hero p {
   max-width: 58ch;
+}
+
+.page-storyboard .hero p {
+  max-width: 64ch;
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 .page-wizard .wizard-main {
@@ -412,12 +435,39 @@ button {
   gap: 10px;
 }
 
+.page-storyboard .brief-strip-panel {
+  padding: 16px 20px 18px;
+}
+
+.page-storyboard .brief-strip-panel .brief-card {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.page-storyboard .brief-strip-panel .meta-list {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.page-storyboard .brief-strip-panel .meta-list div {
+  gap: 6px;
+}
+
+.page-storyboard .brief-strip-panel .task-card-head {
+  align-items: center;
+}
+
+.page-storyboard .storyboard-workspace {
+  gap: 16px;
+}
+
 .layout-2.route-layout {
   grid-template-columns: 360px minmax(0, 1fr);
 }
 
 .storyboard-grid {
-  grid-template-columns: 320px minmax(0, 1fr) 360px;
+  grid-template-columns: 260px minmax(0, 1.2fr) 320px;
   align-items: start;
 }
 
@@ -530,6 +580,14 @@ textarea:focus-visible {
   padding: 18px;
   display: grid;
   gap: 14px;
+}
+
+.meta-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.meta-list.compact {
+  grid-template-columns: 1fr;
 }
 
 .stat-card,
@@ -788,6 +846,32 @@ textarea {
   gap: 16px;
 }
 
+.page-storyboard .preview-stage {
+  min-height: 520px;
+  padding: 26px;
+}
+
+.page-storyboard .preview-overlay {
+  max-width: 580px;
+}
+
+.page-storyboard .preview-panel,
+.page-storyboard .editor-panel,
+.page-storyboard .rail-panel,
+.page-storyboard .timeline-panel {
+  padding: 18px;
+}
+
+.page-storyboard .editor-panel .field,
+.page-storyboard .rail-panel .scene-rail-item,
+.page-storyboard .timeline-item {
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.page-storyboard .editor-panel .field {
+  padding: 12px;
+}
+
 .preview-script strong {
   font-size: var(--text-xs);
   text-transform: uppercase;
@@ -951,6 +1035,11 @@ textarea {
   .stepper {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .meta-list,
+  .page-storyboard .brief-strip-panel .meta-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 760px) {
@@ -977,6 +1066,12 @@ textarea {
   .stepper,
   .field-grid.two-col,
   .route-outline {
+    grid-template-columns: 1fr;
+  }
+
+  .meta-list,
+  .page-storyboard .brief-strip-panel .meta-list,
+  .task-meta-strip {
     grid-template-columns: 1fr;
   }
 }
